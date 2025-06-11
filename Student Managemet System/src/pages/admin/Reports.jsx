@@ -1,0 +1,3 @@
+export default function Reports() {
+  // component code...
+};

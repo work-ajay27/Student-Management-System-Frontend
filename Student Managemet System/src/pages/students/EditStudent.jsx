@@ -1,0 +1,3 @@
+export default function EditStudent() {
+  // component code...
+};
