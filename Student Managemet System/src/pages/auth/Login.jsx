@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; //axios import line
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,14 +15,17 @@ const Login = () => {
         password,
       });
 
-      // Store token and role
+      // Convert role to lowercase
+      const role = res.data.role.toLowerCase();
+
+      // Store token and lowercase role in localStorage
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.role);
+      localStorage.setItem("role", role);
 
       // Redirect based on role
-      if (res.data.role === "ADMIN") navigate("/admin/dashboard");
-      else if (res.data.role === "STUDENT") navigate("/student/dashboard");
-      else if (res.data.role === "TEACHER") navigate("/teacher/dashboard");
+      if (role === "admin") navigate("/admin/dashboard");
+      else if (role === "student") navigate("/student/dashboard");
+      else if (role === "teacher") navigate("/teacher/dashboard");
       else navigate("/");
 
     } catch (err) {
@@ -30,9 +33,6 @@ const Login = () => {
       alert("Invalid email or password ❌");
     }
   };
-
-
-
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200">

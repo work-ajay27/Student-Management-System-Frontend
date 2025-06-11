@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Auth
 import Login from './pages/auth/Login';
 import NotFound from './pages/NotFound';
+import Register from './pages/auth/Register';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -40,6 +41,9 @@ function App() {
   return (
     <Router>
       <Routes>
+
+        {/* Register Route */}
+        <Route path="/register" element={<Register />} />
 
         {/* Public Routes */}
         <Route path="/" element={<Login />} />

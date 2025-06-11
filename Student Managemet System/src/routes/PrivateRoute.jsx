@@ -1,21 +1,21 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import React from "react";
+import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ children, role }) => {
-    const { isAuthenticated, userRole } = useContext(AuthContext);
+const PrivateRoute = ({ role, children }) => {
+    const token = localStorage.getItem("token");
+    const userRole = localStorage.getItem("role");
 
-    if (!isAuthenticated) {
-        // User not logged in, redirect to login
-        return <Navigate to="/" replace />;
+    // If no token, redirect to login
+    if (!token) {
+        return <Navigate to="/" />;
     }
 
-    if (role && userRole !== role) {
-        // User logged in but has no permission
-        return <Navigate to="/" replace />;
+    // If role does not match, redirect to login (or a 'Not Authorized' page if you want)
+    if (userRole !== role.toLowerCase()) {
+        return <Navigate to="/" />;
     }
 
-    // User is authenticated and authorized
+    // Otherwise, allow access
     return children;
 };
 
