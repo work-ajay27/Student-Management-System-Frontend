@@ -1,14 +1,38 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; //axios import line
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // 🔐 Add your login API call logic here
-    console.log("Logging in with:", { email, password });
+    try {
+      const res = await axios.post("http://localhost:8080/api/auth/login", {
+        email,
+        password,
+      });
+
+      // Store token and role
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+
+      // Redirect based on role
+      if (res.data.role === "ADMIN") navigate("/admin/dashboard");
+      else if (res.data.role === "STUDENT") navigate("/student/dashboard");
+      else if (res.data.role === "TEACHER") navigate("/teacher/dashboard");
+      else navigate("/");
+
+    } catch (err) {
+      console.error(err);
+      alert("Invalid email or password ❌");
+    }
   };
+
+
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200">
